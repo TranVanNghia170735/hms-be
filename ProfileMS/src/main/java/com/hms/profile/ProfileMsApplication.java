@@ -1,13 +1,13 @@
-package com.hms.user;
+package com.hms.profile;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class UserMsApplication {
+public class ProfileMsApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(UserMsApplication.class, args);
+		SpringApplication.run(ProfileMsApplication.class, args);
 	}
 
 }
