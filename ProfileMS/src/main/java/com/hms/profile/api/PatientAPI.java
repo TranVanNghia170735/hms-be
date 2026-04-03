@@ -37,4 +37,9 @@ public class PatientAPI {
     }
 
 
+    @GetMapping("/exists/{id}")
+    public ResponseEntity<Boolean> patientExists(@PathVariable Long id) throws HmsException{
+        return new ResponseEntity<>(patientService.patientExists(id), HttpStatus.OK);
+    }
+
 }

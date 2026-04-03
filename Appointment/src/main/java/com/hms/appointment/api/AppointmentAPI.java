@@ -1,5 +1,6 @@
 package com.hms.appointment.api;
 
+import com.hms.appointment.dto.ApointmentDetails;
 import com.hms.appointment.dto.AppointmentDTO;
 import com.hms.appointment.exception.HmsException;
 import com.hms.appointment.service.AppointmentService;
@@ -32,6 +33,12 @@ public class AppointmentAPI {
     @GetMapping("/get/{appointmentId}")
     public ResponseEntity<AppointmentDTO> getAppointmentDetails (@PathVariable Long appointmentId) throws HmsException{
         return new ResponseEntity<>(appointmentService.getAppointmentDetails(appointmentId), HttpStatus.OK);
+
+    }
+
+    @GetMapping("/get/details/{appointmentId}")
+    public ResponseEntity<ApointmentDetails> getAppointmentDetailsWithName(@PathVariable Long appointmentId) throws HmsException {
+        return new ResponseEntity<>(appointmentService.getAppointmentDetailsWithName(appointmentId), HttpStatus.OK);
 
     }
 }
