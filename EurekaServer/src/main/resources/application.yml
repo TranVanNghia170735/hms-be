@@ -1,0 +1,9 @@
+server:
+  port: 8761
+spring:
+  application:
+    name: EurekaServer
+eureka:
+  client:
+    register-with-eureka: false #Không đăng kí chính discovery-server vào Eureka Server
+    fetch-registry: false #Thằng này là Eureka Server, nó không cần hỏi ai xem registry có gì, vì chính nó là nơi giữ registry.

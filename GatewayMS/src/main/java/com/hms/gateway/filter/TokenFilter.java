@@ -28,7 +28,9 @@ public class TokenFilter extends AbstractGatewayFilterFactory<TokenFilter.Config
                         r.header("X-Secret-Key", "SECRET")).build());
             }
             HttpHeaders header = exchange.getRequest().getHeaders();
-            if(!header.containsKey(HttpHeaders.AUTHORIZATION)){
+//            if(!header.containsKey(HttpHeaders.AUTHORIZATION)){
+            String auth = header.getFirst(HttpHeaders.AUTHORIZATION);
+            if (auth == null || auth.isEmpty()) {
                 throw new RuntimeException("Authorization header is missing");
             }
             String authHeader = header.getFirst(HttpHeaders.AUTHORIZATION);
