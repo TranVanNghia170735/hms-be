@@ -27,6 +27,7 @@ public class JwtUtil {
         claims.put("role", user.getRole());
         claims.put("name", user.getName());
         claims.put("authorities", user.getAuthorities());
+        claims.put("profileId", user.getProfileId());
         return doGenerateToken(claims, user.getUsername());
     }
 

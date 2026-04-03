@@ -5,6 +5,7 @@ import com.hms.profile.exception.HmsException;
 import com.hms.profile.repository.PatientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,4 +26,13 @@ public class PatientServiceImpl implements PatientService{
     public PatientDTO getPatientById(Long id) throws HmsException {
         return patientRepository.findById(id).orElseThrow(()-> new HmsException("PATIENT_NOT_FOUND")).toDTO();
     }
+
+    @Override
+    @Transactional
+    public PatientDTO updatePatient(PatientDTO patientDTO) throws HmsException {
+        patientRepository.findById(patientDTO.getId()).orElseThrow(() -> new HmsException("PATIENT_NOT_FOUND"));
+        return patientRepository.save(patientDTO.toEntity()).toDTO();
+    }
+
+
 }

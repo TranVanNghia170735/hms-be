@@ -7,4 +7,5 @@ import com.hms.profile.exception.HmsException;
 public interface DoctorService {
     public Long addDoctor(DoctorDTO doctorDTO) throws HmsException;
     public DoctorDTO getDoctorById(Long id) throws HmsException;
+    public DoctorDTO updateDoctor(DoctorDTO doctor) throws HmsException;
 }
