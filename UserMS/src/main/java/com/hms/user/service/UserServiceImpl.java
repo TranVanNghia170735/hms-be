@@ -1,6 +1,8 @@
 package com.hms.user.service;
 
 
+import com.hms.user.clients.ProfileClient;
+import com.hms.user.dto.Roles;
 import com.hms.user.dto.UserDTO;
 import com.hms.user.entity.User;
 import com.hms.user.exception.HmsException;
@@ -20,6 +22,7 @@ public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ApiService apiService;
+    private final ProfileClient profileClient;
 
 
     @Override
@@ -29,7 +32,14 @@ public class UserServiceImpl implements UserService{
             throw new HmsException("USER_ALREADY_EXISTS");
         }
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        Long profileId =  apiService.addProfile(userDTO).block();
+        Long profileId =  null;
+
+        if(userDTO.getRole().equals(Roles.DOCTOR)){
+            profileId = profileClient.addDoctorProfile(userDTO);
+        } else if (userDTO.getRole().equals(Roles.PATIENT)){
+            profileId = profileClient.addPatientProfile(userDTO);
+        }
+
         System.out.println(profileId);
         userDTO.setProfileId(profileId);
         userRepository.save(userDTO.toEntity());

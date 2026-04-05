@@ -1,5 +1,6 @@
 package com.hms.appointment.service;
 
+import com.hms.appointment.clients.ProfileClient;
 import com.hms.appointment.dto.*;
 import com.hms.appointment.entity.Appointment;
 import com.hms.appointment.exception.HmsException;
@@ -13,11 +14,14 @@ public class AppointmentServiceImpl implements AppointmentService{
 
     private final AppointmentRepository appointmentRepository;
     private final ApiService apiService;
+    private final ProfileClient profileClient;
 
     @Override
     public Long scheduleAppointment(AppointmentDTO appointmentDTO) throws HmsException {
-        Boolean doctorExists = apiService.doctorExists(appointmentDTO.getDoctorId()).block();
-        Boolean patientExist = apiService.patientExists(appointmentDTO.getPatientId()).block();
+//        Boolean doctorExists = apiService.doctorExists(appointmentDTO.getDoctorId()).block();
+//        Boolean patientExist = apiService.patientExists(appointmentDTO.getPatientId()).block();
+        Boolean doctorExists = profileClient.doctorExists(appointmentDTO.getDoctorId());
+        Boolean patientExist = profileClient.patientExists(appointmentDTO.getPatientId());
         if(doctorExists == null  || !doctorExists){
             throw new HmsException("DOCTOR_NOT_FOUND");
         }
@@ -59,8 +63,11 @@ public class AppointmentServiceImpl implements AppointmentService{
     public ApointmentDetails getAppointmentDetailsWithName(Long appointId) throws HmsException {
         AppointmentDTO appointmentDTO = appointmentRepository.findById(appointId)
                 .orElseThrow(() -> new HmsException("APPOINTMENT_NOT_FOUND")).toDTO();
-        DoctorDTO doctorDTO = apiService.getDoctorById(appointmentDTO.getDoctorId()).block();
-        PatientDTO patientDTO = apiService.getPatientById(appointmentDTO.getPatientId()).block();
+//        DoctorDTO doctorDTO = apiService.getDoctorById(appointmentDTO.getDoctorId()).block();
+//        PatientDTO patientDTO = apiService.getPatientById(appointmentDTO.getPatientId()).block();
+
+        DoctorDTO doctorDTO = profileClient.getDoctorById(appointmentDTO.getDoctorId());
+        PatientDTO patientDTO = profileClient.getPatientById(appointmentDTO.getPatientId());
 
         return new ApointmentDetails(appointmentDTO.getId(), appointmentDTO.getPatientId(),
                 patientDTO.getName(),patientDTO.getEmail(),patientDTO.getPhone(),
