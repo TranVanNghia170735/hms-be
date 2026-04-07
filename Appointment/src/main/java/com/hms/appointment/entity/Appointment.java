@@ -30,4 +30,8 @@ public class Appointment {
     public AppointmentDTO toDTO(){
         return new AppointmentDTO(id, patientId, doctorId, appointmentTime, status, reason, notes);
     }
+
+    public Appointment(Long id){
+        this.id = id;
+    }
 }

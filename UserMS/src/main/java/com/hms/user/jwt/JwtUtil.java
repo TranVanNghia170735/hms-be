@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Component
 public class JwtUtil {
-    private static final long JWT_TOKEN_VALIDITY = 2 * 60 * 60L; // 2 hours
+    private static final long JWT_TOKEN_VALIDITY = 24 * 60 * 60L; // 24 hours
     private static final long REFRESH_TOKEN_VALIDITY = 30 * 24 * 60 * 60L; // 30 days
 
     private static final String SECRET = "79fc72a244c391a9ba7efa28137da35d0895fd4795982863d22a21af6099365669e0a2668840a86ca3a9f07ee6c6c92dbf2b0651e5b97b52491ffee356d4dcba";
