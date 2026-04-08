@@ -5,6 +5,7 @@ import com.hms.appointment.entity.ApRecord;
 import com.hms.appointment.entity.StringListConverter;
 import com.hms.appointment.exception.HmsException;
 import com.hms.appointment.repository.ApRecordRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +13,11 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ApRecordServiceImpl implements ApRecordService{
 
     private final ApRecordRepository apRecordRepository;
+    private final PrescriptionService prescriptionService;
 
     @Override
     public Long createApRecord(ApRecordDTO request) throws HmsException {
@@ -22,7 +25,12 @@ public class ApRecordServiceImpl implements ApRecordService{
         if(existingRecord.isPresent()){
             throw new HmsException("APPOINTMENT_RECORD_ALREADY_EXISTS");
         }
-        return apRecordRepository.save(request.toEntity()).getId();
+        Long id = apRecordRepository.save(request.toEntity()).getId();
+        if(request.getPrescription()!=null){
+            request.getPrescription().setAppointmentId(request.getAppointmentId());
+            prescriptionService.savePrescription(request.getPrescription());
+        }
+        return id;
     }
 
     @Override
@@ -49,5 +57,13 @@ public class ApRecordServiceImpl implements ApRecordService{
     public ApRecordDTO getApRecordById(Long recordId) throws HmsException {
         return apRecordRepository.findById(recordId).orElseThrow(() ->
                 new HmsException("APPOINTMENT_RECORD_NOT_FOUND")).toDTO();
+    }
+
+    @Override
+    public ApRecordDTO getApRecordDetailsByAppointmentId(Long appointmentId) throws HmsException {
+        ApRecordDTO record = apRecordRepository.findByAppointment_Id(appointmentId).orElseThrow(()
+                -> new HmsException("APPOINTMENT_RECORD_NOT_FOUND")).toDTO();
+        record.setPrescription(prescriptionService.getPrescriptionByAppointmentId(appointmentId));
+        return record;
     }
 }

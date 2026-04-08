@@ -35,7 +35,8 @@ public class ApRecord {
     public ApRecordDTO toDTO(){
         return new ApRecordDTO(id, patientId, doctorId, appointment.getId(),
                 StringListConverter.convertStringToList(symptoms), diagnosis,
-                StringListConverter.convertStringToList(tests), notes, referral, followUpDate, createdAt);
+                StringListConverter.convertStringToList(tests), notes, referral,null,
+                followUpDate, createdAt);
     }
 
 

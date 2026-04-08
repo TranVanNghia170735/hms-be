@@ -15,7 +15,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 public class ApRecordDTO {
     private Long id;
     private Long patientId;
@@ -26,6 +25,7 @@ public class ApRecordDTO {
     private List<String> tests;
     private String notes;
     private String referral;
+    private PrescriptionDTO prescription;
     private LocalDate followUpDate;
     private LocalDateTime createdAt;
 
