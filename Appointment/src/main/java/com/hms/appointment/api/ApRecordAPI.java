@@ -2,13 +2,18 @@ package com.hms.appointment.api;
 
 
 import com.hms.appointment.dto.ApRecordDTO;
+import com.hms.appointment.dto.PrescriptionDetails;
+import com.hms.appointment.dto.RecordDetails;
 import com.hms.appointment.exception.HmsException;
 import com.hms.appointment.service.ApRecordService;
+import com.hms.appointment.service.PrescriptionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -18,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 public class ApRecordAPI {
 
     private final ApRecordService apRecordService;
+    private final PrescriptionService prescriptionService;
 
     @PostMapping("/create")
     public ResponseEntity<Long> createAppointmentReport(@RequestBody ApRecordDTO request) throws HmsException {
@@ -47,6 +53,27 @@ public class ApRecordAPI {
     public ResponseEntity<ApRecordDTO> getAppointmentReportById(@PathVariable Long recordId) throws HmsException{
         return new ResponseEntity<>(apRecordService.getApRecordById(recordId), HttpStatus.OK);
     }
+
+    @GetMapping("/getRecordsByPatientId/{patientId}")
+    public ResponseEntity<List<RecordDetails>> getRecordsByPatientId(@PathVariable Long patientId) throws HmsException {
+        return new ResponseEntity<>(apRecordService.getRecordsByPatientId(patientId), HttpStatus.OK);
+    }
+
+    @GetMapping("/isRecordExists/{appointmentId}")
+    public ResponseEntity<Boolean> isRecordExists(@PathVariable Long appointmentId) throws HmsException {
+        return new ResponseEntity<>(apRecordService.isRecordExists(appointmentId), HttpStatus.OK);
+    }
+
+    @GetMapping("/getPrescriptionsByPatientId/{patientId}")
+    public ResponseEntity<List<PrescriptionDetails>> getPrescriptionsByPatientId(@PathVariable Long patientId) throws HmsException{
+      return new ResponseEntity<>(prescriptionService.getPrescriptionsByPatientId(patientId), HttpStatus.OK);
+    }
+
+
+
+
+
+
 
 
 }
