@@ -1,4 +1,4 @@
-package com.hms.appointment.entity;
+package com.hms.appointment.utility;
 
 import java.util.List;
 

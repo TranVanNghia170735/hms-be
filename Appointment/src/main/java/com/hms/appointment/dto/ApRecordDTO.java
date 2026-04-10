@@ -2,8 +2,7 @@ package com.hms.appointment.dto;
 
 import com.hms.appointment.entity.ApRecord;
 import com.hms.appointment.entity.Appointment;
-import com.hms.appointment.entity.StringListConverter;
-import jakarta.persistence.*;
+import com.hms.appointment.utility.StringListConverter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

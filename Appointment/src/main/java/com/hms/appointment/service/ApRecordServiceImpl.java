@@ -5,7 +5,7 @@ import com.hms.appointment.dto.ApRecordDTO;
 import com.hms.appointment.dto.DoctorName;
 import com.hms.appointment.dto.RecordDetails;
 import com.hms.appointment.entity.ApRecord;
-import com.hms.appointment.entity.StringListConverter;
+import com.hms.appointment.utility.StringListConverter;
 import com.hms.appointment.exception.HmsException;
 import com.hms.appointment.repository.ApRecordRepository;
 import jakarta.transaction.Transactional;

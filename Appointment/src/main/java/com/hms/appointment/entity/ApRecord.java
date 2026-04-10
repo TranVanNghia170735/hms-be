@@ -3,6 +3,7 @@ package com.hms.appointment.entity;
 
 import com.hms.appointment.dto.ApRecordDTO;
 import com.hms.appointment.dto.RecordDetails;
+import com.hms.appointment.utility.StringListConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
