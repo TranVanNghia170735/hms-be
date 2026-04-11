@@ -12,4 +12,5 @@ public interface MedicineInventoryService {
     MedicineInventoryDTO addMedicine(MedicineInventoryDTO medicine) throws  HmsException;
     MedicineInventoryDTO updateMedicine(MedicineInventoryDTO medicine) throws HmsException;
     void deleteMedicine(Long id) throws HmsException;
+    public void deleteExpiredMedicines()throws  HmsException;
 }

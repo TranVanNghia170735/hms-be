@@ -1,6 +1,7 @@
 package com.hms.pharmacy.entity;
 
 import com.hms.pharmacy.dto.MedicineInventoryDTO;
+import com.hms.pharmacy.dto.StockStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,9 +24,13 @@ public class MedicineInventory {
     private Integer quantity; //Quantity in stock
     private LocalDate expiryDate; // Expiry date of the batch
     private LocalDate addedDate; //Date when the batch was added to inventory.
+    private Integer initialQuantity; //Initial quantity of the batch
+    @Enumerated(EnumType.STRING)
+    private StockStatus status;
 
     public MedicineInventoryDTO toDTO(){
-        return new MedicineInventoryDTO(id, medicine != null ? medicine.getId() : null, batchNo, quantity, expiryDate, addedDate);
+        return new MedicineInventoryDTO(id, medicine != null ? medicine.getId() : null,
+                batchNo, quantity, expiryDate, addedDate, initialQuantity,status);
     }
 
 }

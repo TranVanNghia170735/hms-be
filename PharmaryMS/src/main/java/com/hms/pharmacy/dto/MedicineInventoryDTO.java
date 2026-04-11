@@ -18,11 +18,13 @@ public class MedicineInventoryDTO {
     private Integer quantity;
     private LocalDate expiryDate;
     private LocalDate addedDate;
+    private Integer initialQuantity;
+    private StockStatus status;
 
 
     public MedicineInventory toEntity() {
         return new MedicineInventory(this.id, new Medicine(this.medicineId), this.batchNo, this.quantity,
                 this.expiryDate,
-                this.addedDate);
+                this.addedDate, this.initialQuantity, status);
     }
 }
