@@ -1,6 +1,6 @@
 package com.hms.pharmacy.utility;
 
-import com.hms.appointment.exception.HmsException;
+import com.hms.pharmacy.exception.HmsException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
