@@ -33,6 +33,7 @@ public class Medicine {
     private MedicineType type; //e.g TABLET, SYRUP
     private String manufacturer;
     private Integer unitPrice;
+    private Integer stock;
     private LocalDateTime createAt; // time for record creation
 
     public Medicine(Long id){
@@ -40,6 +41,6 @@ public class Medicine {
     }
 
     public MedicineDTO toDTO(){
-        return new MedicineDTO(id, name, dosage, category, type, manufacturer, unitPrice, createAt);
+        return new MedicineDTO(id, name, dosage, category, type, manufacturer, unitPrice,stock, createAt);
     }
 }
