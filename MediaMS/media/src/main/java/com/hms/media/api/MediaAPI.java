@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api/media")
+@RequestMapping("/media")
 @RequiredArgsConstructor
 public class MediaAPI {
 
