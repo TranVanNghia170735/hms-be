@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -22,14 +23,16 @@ public class SaleServiceImpl implements SaleService{
     @Override
     @Transactional
     public Long createSale(SaleRequest dto) throws HmsException {
-        if(saleRepository.existsByPrescriptionId(dto.getPrescriptionId())){
+        if(dto.getPrescriptionId() !=null &&
+        saleRepository.existsByPrescriptionId(dto.getPrescriptionId())){
             throw new HmsException("SALE_ALREADY_EXISTS");
         }
 
         for(SaleItemDTO saleItem: dto.getSaleItems()){
             saleItem.setBatchNo(medicineInventoryService.sellStock(saleItem.getMedicineId(), saleItem.getQuantity()));
         }
-        Sale sale = new Sale(null, dto.getPrescriptionId(), LocalDateTime.now(), dto.getTotalAmount());
+        Sale sale = new Sale(null, dto.getPrescriptionId(),dto.getBuyerName(),
+                dto.getBuyerContact(), LocalDateTime.now(), dto.getTotalAmount());
         sale = saleRepository.save(sale);
         saleItemService.createSaleItems(sale.getId(), dto.getSaleItems());
 
@@ -56,4 +59,11 @@ public class SaleServiceImpl implements SaleService{
         return saleRepository.findByPrescriptionId(prescriptionId)
                 .orElseThrow(()-> new HmsException("SALE_NOT_FOUND")).toDTO();
     }
+
+    @Override
+    public List<SaleDTO> getAllSales() throws HmsException {
+        return ((List<Sale>) saleRepository.findAll()).stream().map(Sale::toDTO).toList();
+    }
+
+
 }
