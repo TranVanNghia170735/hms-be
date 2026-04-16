@@ -46,18 +46,19 @@ public class MedicineInventoryServiceImpl implements MedicineInventoryService{
         MedicineInventory existingInventory = medicineInventoryRepository.findById(medicine.getId())
                 .orElseThrow(()-> new HmsException("INVENTORY_NOT_FOUND"));
         existingInventory.setBatchNo(medicine.getBatchNo());
-        if(existingInventory.getQuantity() < medicine.getQuantity()){
-            medicineService.addStock(medicine.getMedicineId(), medicine.getQuantity() - existingInventory.getQuantity());
-        } else if (existingInventory.getQuantity() > medicine.getQuantity()) {
-            medicineService.removeStock(medicine.getMedicineId(), existingInventory.getQuantity() -medicine.getQuantity());
-        }
+        if(existingInventory.getInitialQuantity() < medicine.getQuantity()){
+            medicineService.addStock(medicine.getMedicineId(), medicine.getQuantity() - existingInventory.getInitialQuantity());
+        } else if (existingInventory.getInitialQuantity() > medicine.getQuantity()) {
+            medicineService.removeStock(medicine.getMedicineId(), existingInventory.getInitialQuantity() -medicine.getQuantity());
 
+        }
         existingInventory.setQuantity(medicine.getQuantity());
-        existingInventory.setInitialQuantity(medicine.getInitialQuantity());
+        existingInventory.setInitialQuantity(medicine.getQuantity());
         existingInventory.setExpiryDate(medicine.getExpiryDate());
 
         return medicineInventoryRepository.save(existingInventory).toDTO();
     }
+
 
     @Override
     public void deleteMedicine(Long id) throws HmsException {
@@ -81,6 +82,46 @@ public class MedicineInventoryServiceImpl implements MedicineInventoryService{
 
         }
         this.markExpired(expiredMedicines);
+    }
+
+    @Override
+    @Transactional
+    public String sellStock(Long medicineId, Integer quantity) throws HmsException {
+        List<MedicineInventory> inventories = medicineInventoryRepository.findByMedicineIdAndExpiryDateAfterAndQuantityGreaterThanAndStatusOrderByExpiryDateAsc(medicineId,
+                LocalDate.now(), 0, StockStatus.EXPIRED);
+        if(inventories.isEmpty()){
+            throw  new HmsException("OUT_OF_STOCK");
+        }
+        StringBuilder batchDetails = new StringBuilder();
+        int remainingQuantity = quantity;
+        for(MedicineInventory inventory: inventories){
+            if(remainingQuantity <=0){
+                break;
+            }
+            int availableQuantity = inventory.getQuantity();
+            if(availableQuantity <= remainingQuantity){
+                // Use up the entire batch
+                batchDetails.append(String.format("Batch %s: %d units\n", inventory.getBatchNo(),
+                        availableQuantity));
+                remainingQuantity -=availableQuantity;
+                inventory.setQuantity(0);
+                inventory.setStatus(StockStatus.EXPIRED);
+            } else {
+                batchDetails.append(String.format("Batch %s: %d units\n", inventory.getBatchNo(),
+                        remainingQuantity));
+                inventory.setQuantity(availableQuantity - remainingQuantity);
+                medicineService.removeStock(medicineId, remainingQuantity);
+                remainingQuantity = 0;
+            }
+        }
+        if(remainingQuantity > 0){
+            throw new HmsException("INSUFFICIENT_STOCK");
+        }
+        medicineService.removeStock(medicineId, quantity);
+        medicineInventoryRepository.saveAll(inventories);
+
+        medicineInventoryRepository.saveAll(inventories);
+        return batchDetails.toString();
     }
 
 

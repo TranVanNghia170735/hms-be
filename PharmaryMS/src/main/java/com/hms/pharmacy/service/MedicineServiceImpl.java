@@ -17,6 +17,7 @@ public class MedicineServiceImpl implements MedicineService{
 
     private final MedicineRepository medicineRepository;
 
+
     @Override
     public Long addMedicine(MedicineDTO medicineDTO) throws HmsException {
         Optional<Medicine> optional = medicineRepository.findByNameIgnoreCaseAndDosageIgnoreCase(medicineDTO.getName(),
@@ -80,6 +81,5 @@ public class MedicineServiceImpl implements MedicineService{
         medicineRepository.save(medicine);
         return medicine.getStock();
     }
-
 
 }

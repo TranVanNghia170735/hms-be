@@ -14,6 +14,7 @@ import java.util.List;
 public class SaleItemServiceImpl implements SaleItemService{
 
     private final SaleItemRepository saleItemRepository;
+    private final MedicineInventoryService medicineInventoryService;
 
     @Override
     public Long createSaleItem(SaleItemDTO saleItemDTO) throws HmsException {
@@ -49,5 +50,14 @@ public class SaleItemServiceImpl implements SaleItemService{
         return saleItemRepository.findById(id)
                 .map(SaleItem:: toDTO)
                 .orElseThrow(()-> new HmsException("SALE_ITEM_NOT_FOUND"));
+    }
+
+    @Override
+    public void createSaleItems(Long saleId, List<SaleItemDTO> saleItemDTOs) throws HmsException {
+
+        saleItemDTOs.stream().map((x) -> {
+            x.setSaleId(saleId);
+            return x.toEntity();
+        }).forEach(saleItemRepository::save);
     }
 }
