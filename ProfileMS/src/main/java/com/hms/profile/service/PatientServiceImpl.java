@@ -2,6 +2,7 @@ package com.hms.profile.service;
 
 import com.hms.profile.dto.DoctorDropdown;
 import com.hms.profile.dto.PatientDTO;
+import com.hms.profile.entity.Patient;
 import com.hms.profile.exception.HmsException;
 import com.hms.profile.repository.PatientRepository;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +46,12 @@ public class PatientServiceImpl implements PatientService{
     @Override
     public List<DoctorDropdown> getPatientsById(List<Long> ids) throws HmsException {
         return patientRepository.findAllPatientDropdownsByIds(ids);
+    }
+
+    @Override
+    public List<PatientDTO> getAllPatients() throws HmsException {
+        return ((List<Patient>) patientRepository.findAll()).stream()
+                .map(patient -> patient.toDTO()).toList();
     }
 
 

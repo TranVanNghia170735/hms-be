@@ -1,6 +1,7 @@
 package com.hms.profile.api;
 
 
+import com.hms.profile.dto.DoctorDTO;
 import com.hms.profile.dto.DoctorDropdown;
 import com.hms.profile.dto.PatientDTO;
 import com.hms.profile.exception.HmsException;
@@ -49,5 +50,12 @@ public class PatientAPI {
     public ResponseEntity<List<DoctorDropdown>> getPatientsById(@RequestParam List<Long> ids) throws  HmsException {
         return new ResponseEntity<>(patientService.getPatientsById(ids), HttpStatus.OK);
     }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<List<PatientDTO>> getAllPatients() throws HmsException {
+        return new ResponseEntity<>(patientService.getAllPatients(), HttpStatus.OK);
+    }
+
+
 
 }

@@ -14,5 +14,6 @@ public interface DoctorService {
     public Boolean doctorExists(Long id) throws HmsException;
     public List<DoctorDropdown> getDoctorDropdown() throws HmsException;
     public List<DoctorDropdown> getDoctorsById(List<Long> ids) throws HmsException;
+    public List<DoctorDTO> getAllDoctor() throws HmsException;
 
 }
