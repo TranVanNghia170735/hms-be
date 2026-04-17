@@ -2,10 +2,12 @@ package com.hms.appointment.api;
 
 
 import com.hms.appointment.dto.ApRecordDTO;
+import com.hms.appointment.dto.MedicineDTO;
 import com.hms.appointment.dto.PrescriptionDetails;
 import com.hms.appointment.dto.RecordDetails;
 import com.hms.appointment.exception.HmsException;
 import com.hms.appointment.service.ApRecordService;
+import com.hms.appointment.service.MedicineService;
 import com.hms.appointment.service.PrescriptionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,6 +26,7 @@ public class ApRecordAPI {
 
     private final ApRecordService apRecordService;
     private final PrescriptionService prescriptionService;
+    private final MedicineService medicineService;
 
     @PostMapping("/create")
     public ResponseEntity<Long> createAppointmentReport(@RequestBody ApRecordDTO request) throws HmsException {
@@ -69,11 +72,13 @@ public class ApRecordAPI {
       return new ResponseEntity<>(prescriptionService.getPrescriptionsByPatientId(patientId), HttpStatus.OK);
     }
 
+    @GetMapping("/getAllPrescriptions")
+    public ResponseEntity<List<PrescriptionDetails>> getAllPrescriptions() throws HmsException {
+        return new ResponseEntity<>(prescriptionService.getPrescriptions(), HttpStatus.OK);
+    }
 
-
-
-
-
-
-
+    @GetMapping("/getMedicinesByPrescriptionId/{prescriptionId}")
+    public ResponseEntity<List<MedicineDTO>> getMedicinesByPrescriptionId(@PathVariable Long prescriptionId) throws HmsException {
+        return new ResponseEntity<>(medicineService.getAllMedicinesByPrescriptionId(prescriptionId), HttpStatus.OK);
+    }
 }

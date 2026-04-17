@@ -16,4 +16,8 @@ public interface PrescriptionService {
 
     public List<PrescriptionDetails> getPrescriptionsByPatientId(Long patientId) throws HmsException;
 
+    public List<PrescriptionDetails> getPrescriptions() throws HmsException;
+
+
+
 }
