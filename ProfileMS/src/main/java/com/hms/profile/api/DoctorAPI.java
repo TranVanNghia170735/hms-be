@@ -59,5 +59,10 @@ public class DoctorAPI {
         return new ResponseEntity<>(doctorService.getAllDoctor(), HttpStatus.OK);
     }
 
+    @GetMapping("/getProfileId/{id}")
+    public ResponseEntity<Long> getProfileId(@PathVariable Long id) throws HmsException{
+        return new ResponseEntity<>(doctorService.getDoctorById(id).getProfilePictureId(),HttpStatus.OK);
+    }
+
 
 }
