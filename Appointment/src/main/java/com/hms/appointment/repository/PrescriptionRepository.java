@@ -1,6 +1,7 @@
 package com.hms.appointment.repository;
 
 import com.hms.appointment.entity.Prescription;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
@@ -10,4 +11,7 @@ public interface PrescriptionRepository extends CrudRepository<Prescription, Lon
 
     Optional<Prescription> findByAppointment_Id(Long appointmentId);
     List<Prescription> findAllByPatientId(Long patientId);
+
+    @Query("Select p.id from Prescription p where p.patientId=?1")
+    List<Long> findAllPreIdsByPatient(Long patientId);
 }
