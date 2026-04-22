@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name="ProfileMS", configuration = FeignClientInterceptor.class)
+@FeignClient(name="ProfileMS", url="${profiles.url}", configuration = FeignClientInterceptor.class)
 public interface ProfileClient {
     @PostMapping("/profile/patient/add")
     Long addPatientProfile(@RequestBody UserDTO userDTO);
